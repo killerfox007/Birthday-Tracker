@@ -66,12 +66,13 @@ class People:
         """
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.from_db(row) if row else None
-        
+    
+    @classmethod
     def find_by_id(cls,id):
         sql="""
         SELECT *
         FROM peoples
-        WHERE id is ?
+        WHERE id = ?
         """
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.from_db(row) if row else None
