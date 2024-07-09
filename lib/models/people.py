@@ -65,6 +65,7 @@ class People:
         WHERE name is ?
         """
         row = CURSOR.execute(sql, (name,)).fetchone()
+        print(row)
         return cls.from_db(row) if row else None
     
     @classmethod
@@ -74,10 +75,9 @@ class People:
         FROM peoples
         WHERE id = ?
         """
+        
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.from_db(row) if row else None
-    
-    
     
     def __repr__(self):
         return f'<Person name={self.name} id={self.id}'

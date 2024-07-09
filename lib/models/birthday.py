@@ -13,17 +13,18 @@ class Birthday:
         if isinstance(date, str) and len(date) == 10:
             self._date = date
         else:
-            raise ValueError("Date Must be in this format, 00/00/0000")
+            print("Date Must be in this format, 00/00/0000")
     @property
     def person_id(self):
         return self._person_id
     @person_id.setter
     def person_id(self, person_id):
         from models.people import People
-        if isinstance(person_id, int) and person_id > 0:
-            person=People.find_by_id(person_id)
+        change_to_int = int(person_id)
+        if isinstance(change_to_int, int) and change_to_int > 0:
+            person=People.find_by_id(change_to_int)
             if person:
-                self._person_id = person_id
+                self._person_id = change_to_int
             else:
                 raise ValueError("Person not found")
         else:
@@ -61,8 +62,35 @@ class Birthday:
         """
         all_birthdays = CURSOR.execute(sql).fetchall()
         return [cls.from_db(row) for row in all_birthdays]
-
+    @classmethod
     def from_db(cls,row):
         return Birthday(id=row[0], date=row[1], person_id=row[2])
+
+    def delete(self):
+        sql = """
+        DELETE FROM birthdays
+        WHERE person_id = ?
+        """
+        CURSOR.execute(sql, (self.person_id,))
+        CONN.commit()
+    
+    @classmethod
+    def find_by_id(cls, person_id):
+        sql="""
+        SELECT *
+        FROM birthdays
+        WHERE person_id = ?
+        """
+        
+        row = CURSOR.execute(sql, (person_id,)).fetchone()
+        return cls.from_db(row) if row else None
+    
+    @classmethod
+    def drop_table(cls):
+        sql = """
+        DROP TABLE IF EXISTS birthdays
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
     def __repr__(self):
         return f'<Birthday id={self.id} birthday={self.date} person={self.person_id}'
