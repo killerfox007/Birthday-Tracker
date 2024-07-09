@@ -65,7 +65,6 @@ class People:
         WHERE name is ?
         """
         row = CURSOR.execute(sql, (name,)).fetchone()
-        print(row)
         return cls.from_db(row) if row else None
     
     @classmethod

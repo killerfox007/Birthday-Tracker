@@ -7,18 +7,30 @@ def exit_program():
     exit()
 def list_birthday():
     birthdays = Birthday.list_all_birthdays()
-    for birthday in birthdays:
-        print(f'Person ID:{birthday.person_id} Date Of Birth:{birthday.date}')
+    if birthdays:
+        for birthday in birthdays:
+            print(f'Person ID:{birthday.person_id} Date Of Birth:{birthday.date}')
+    else:
+        print('No Birthdays added yet, Use 5 to create a birthday')
 def list_people():
     peoples = People.all_people()
-    for people in peoples:
-        print(f'Name:{people.name} ID:{people.id}')
+    if peoples:
+        for people in peoples:
+            print(f'Name:{people.name} ID:{people.id}')
+    else:
+        print("No people have been added yet, Use 4 to create a person")
 
 def delete_person():
     name = input("Enter Persons Name: ")
     if person := People.find_by_name(name):
-        person.delete()
-        print(f'{name} is Deleted')
+        if birthday := Birthday.find_by_id(person.id):
+            print(birthday)
+            birthday.delete()
+            person.delete()
+            print(f'{name} is Deleted and Birthday {birthday.date} was deleted')
+        else:
+            person.delete()
+            print(f'{name} is Deleted')
     else:
         print(f'{name} is not found')
 
@@ -26,7 +38,10 @@ def find_by_name():
     name = input("Enter Persons Name: ")
     if person := People.find_by_name(name):
         bday = Birthday.find_by_id(person.id)
-        print(f'{person.name}s birthday is {bday.date}')
+        if bday:
+            print(f'{person.name}s birthday is {bday.date}')
+        else:
+            print(f'{person.name} is created but birthday is not set yet')
     else:
         print(f'{name} Isnt in the database')
 def create_person():

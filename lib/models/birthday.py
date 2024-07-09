@@ -92,5 +92,6 @@ class Birthday:
         """
         CURSOR.execute(sql)
         CONN.commit()
+        
     def __repr__(self):
         return f'<Birthday id={self.id} birthday={self.date} person={self.person_id}'
