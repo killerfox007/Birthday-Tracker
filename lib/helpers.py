@@ -58,11 +58,14 @@ def create_birthday():
     date = input("Enter Persons Date of birth. (Example 00/00/0000) Enter: ")
     person = input("Enter Persons Id: ")
     name = People.find_by_id(person)
-    if len(date) == 10 and person:
-        bday = Birthday.create(date,person)
-        print(f'Added {name.name}s birthady and the birthday is {date}')
+    if name:
+        if len(date) == 10 and person:
+            bday = Birthday.create(date,person)
+            print(f'Added {name.name}s birthady and the birthday is {date}')
+        else:
+            print("Date format is strict 00/00/0000")
     else:
-        print("Date format is strict 00/00/0000")
+        print("Person ID not found")
 
 def delete_birthday():
     person_id = input("Enter Persons ID: ")
