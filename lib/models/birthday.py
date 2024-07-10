@@ -36,7 +36,8 @@ class Birthday:
             CREATE TABLE IF NOT EXISTS birthdays (
             id INTEGER PRIMARY KEY,
             date TEXT,
-            person_id INTEGER
+            person_id INTEGER, 
+            FOREIGN KEY (person_id) REFERENCES peoples(id)
             );
             """
         CURSOR.execute(sql)
@@ -92,6 +93,8 @@ class Birthday:
         """
         CURSOR.execute(sql)
         CONN.commit()
-        
-    def __repr__(self):
-        return f'<Birthday id={self.id} birthday={self.date} person={self.person_id}'
+
+    
+
+    # def __repr__(self):
+    #     return f'<Birthday id={self.id} birthday={self.date} person={self.person_id}'

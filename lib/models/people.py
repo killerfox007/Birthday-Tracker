@@ -9,7 +9,7 @@ class People:
         return self._name
     @name.setter
     def name(self,name):
-        if isinstance(name, str) and len(name) > 2 and name != "":
+        if isinstance(name, str) and len(name) >= 2 and name != "":
             self._name = name
         else:
             raise ValueError("Please put a name Longer then 2 characters")
